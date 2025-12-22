@@ -1,0 +1,7 @@
+[project]
+name = "VisualProgramming"
+version = "1.0.0"
+dependencies = ["PySide6==6.10.1",]
+
+[project.optional-dependencies]
+dev = ["black"]
