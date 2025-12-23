@@ -3,6 +3,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 
 from VisualProgramming.UI.GraphSystem.GraphUtilities import drawBackground, drawGuideline
+from VisualProgramming.Core.PkgResource import PkgResource
 
 
 class GraphViewer(QGraphicsView):
@@ -23,9 +24,36 @@ class GraphViewer(QGraphicsView):
         self.setScene(QGraphicsScene(QRectF(200, 200, 200, 200)))
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setStyleSheet(PkgResource.stylesheet("GraphViewer"))
+
+    def mousePressEvent(self, event: QMouseEvent) -> None:
+        """
+        On mouse key pressed.
+        :param event: reference object of QMouseEvent
+        """
+        super().mousePressEvent(event)
 
     def mouseMoveEvent(self, event: QMouseEvent) -> None:
+        """
+        On mouse move.
+        :param event: reference object of QMouseEvent
+        """
         self.onMouseLocation.emit(self.mapToScene(self.mapFromGlobal(QCursor.pos())))
+        super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
+        """
+        On mouse key released.
+        :param event: reference object of QMouseEvent
+        """
+        super().mouseReleaseEvent(event)
+
+    def wheelEvent(self, event: QWheelEvent) -> None:
+        """
+        On mouse wheel changed.
+        :param event: reference object of QWheelEvent
+        """
+        super().wheelEvent(event)
 
     def drawBackground(self, painter: QPainter, rect: QRectF | QRect) -> None:
         super().drawBackground(painter, rect)
