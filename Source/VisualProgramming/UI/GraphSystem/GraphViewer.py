@@ -10,7 +10,6 @@ from VisualProgramming.Core.PkgResource import PkgResource
 
 @dataclass
 class GraphNavigationMode:
-    drag: bool = False
     pan: bool = False
     zoom: bool = False
 
@@ -43,6 +42,13 @@ class GraphViewer(QGraphicsView):
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setStyleSheet(PkgResource.stylesheet("GraphViewer"))
 
+    def deleteSelectedNodes(self) -> None:
+        """Delete the selected nodes"""
+        scene = self.scene()
+        selectedItems = scene.selectedItems()
+        for item in selectedItems:
+            scene.removeItem(item)
+
     def mousePressEvent(self, event: QMouseEvent) -> None:
         """
         On mouse key pressed.
@@ -53,6 +59,8 @@ class GraphViewer(QGraphicsView):
             self.setCursor(Qt.ClosedHandCursor)
             self._mode.pan = True
             event.accept()
+        elif event.button() == Qt.RightButton:
+            self.onPopMenu(event.pos())
         else:
             super().mousePressEvent(event)
 
@@ -89,6 +97,38 @@ class GraphViewer(QGraphicsView):
         :param event: reference object of QWheelEvent
         """
         super().wheelEvent(event)
+
+    def keyPressEvent(self, event: QKeyEvent) -> None:
+        """
+        On key pressed.
+        :param event: reference object of QKeyEvent
+        """
+        match event.key():
+            case Qt.Key_Delete:
+                self.deleteSelectedNodes()
+                event.accept()
+            case _:
+                super().keyPressEvent(event)
+
+    def onPopMenu(self, QPos: QPoint) -> None:
+        """show option menu"""
+        _menu = QMenu(self)
+
+        add_action = _menu.addAction("Add Node")
+        add_action.triggered.connect(self.addNode)
+
+        _menu.exec_(QCursor.pos())
+
+    def addNode(self) -> None:
+        """Add a node to the graph"""
+        node = QGraphicsTextItem()
+        node.setFlag(QGraphicsItem.ItemIsMovable | QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsFocusable)
+        node.setDefaultTextColor(QColor(0, 0, 0))
+        node.setPlainText("Sample Text Node")
+        position = self.mapToScene(self.mapFromGlobal(QCursor.pos()))
+        node.setPos(position)
+
+        self.scene().addItem(node)
 
     def drawBackground(self, painter: QPainter, rect: QRectF | QRect) -> None:
         super().drawBackground(painter, rect)
