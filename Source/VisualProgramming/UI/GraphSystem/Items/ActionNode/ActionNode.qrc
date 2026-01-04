@@ -1,0 +1,10 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="icons">
+        <file alias="Function.svg">../../../../Resources/Icons/Function_01.svg</file>
+        <file alias="ExecutableFill_01.svg">../../../../Resources/Icons/ExecutableFill_01.svg</file>
+        <file alias="ExecutableEmpty_01.svg">../../../../Resources/Icons/ExecutableEmpty_01.svg</file>
+        <file alias="PinEmpty_01.svg">../../../../Resources/Icons/PinEmpty_01.svg</file>
+        <file alias="PinEmpty_01.svg">../../../../Resources/Icons/PinEmpty_01.svg</file>
+    </qresource>
+</RCC>

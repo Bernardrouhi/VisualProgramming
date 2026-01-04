@@ -5,6 +5,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 
 from VisualProgramming.UI.GraphSystem.GraphUtilities import drawBackground, drawGuideline
+from VisualProgramming.UI.GraphSystem.Items.ActionNode.ActionNode import ActionNode, ActionNodeProxy
 from VisualProgramming.Core.PkgResource import PkgResource
 
 
@@ -114,8 +115,11 @@ class GraphViewer(QGraphicsView):
         """show option menu"""
         _menu = QMenu(self)
 
-        add_action = _menu.addAction("Add Node")
-        add_action.triggered.connect(self.addNode)
+        addNode = _menu.addAction("Add Node")
+        addNode.triggered.connect(self.addNode)
+
+        addAction = _menu.addAction("Add Action Node")
+        addAction.triggered.connect(self.addActionNode)
 
         _menu.exec_(QCursor.pos())
 
@@ -125,6 +129,13 @@ class GraphViewer(QGraphicsView):
         node.setFlag(QGraphicsItem.ItemIsMovable | QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsFocusable)
         node.setDefaultTextColor(QColor(0, 0, 0))
         node.setPlainText("Sample Text Node")
+        position = self.mapToScene(self.mapFromGlobal(QCursor.pos()))
+        node.setPos(position)
+
+        self.scene().addItem(node)
+
+    def addActionNode(self) -> None:
+        node = ActionNode()
         position = self.mapToScene(self.mapFromGlobal(QCursor.pos()))
         node.setPos(position)
 
