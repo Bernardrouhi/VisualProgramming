@@ -24,6 +24,9 @@ class ActionNodeProxy(QGraphicsProxyWidget):
         quickWidget.setResizeMode(QQuickWidget.SizeRootObjectToView)
         quickWidget.setClearColor(Qt.transparent)
         quickWidget.setAttribute(Qt.WA_TranslucentBackground)
+        root = quickWidget.rootObject()
+        inputButton = root.findChild(QObject, "ExecuteInput")
+        inputButton.onInputClicked.connect(self.onClicked)
         self.setWidget(quickWidget)
         self.setFlag(QGraphicsItem.ItemIsMovable | QGraphicsItem.ItemIsSelectable)
 
@@ -32,6 +35,9 @@ class ActionNodeProxy(QGraphicsProxyWidget):
         root = self.widget().rootObject()
         if root:
             root.setProperty("isSelected", value)
+
+    def onClicked(self) -> None:
+        print("Clicked")
 
 
 class ActionNode(QGraphicsRectItem):

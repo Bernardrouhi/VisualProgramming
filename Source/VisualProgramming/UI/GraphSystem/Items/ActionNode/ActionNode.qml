@@ -96,12 +96,24 @@ Rectangle{
 
             Image {
                 id: executeInput
+                objectName: "ExecuteInput"
+
+                signal onInputClicked
+
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.margins: 10
                 fillMode: Image.PreserveAspectFit
                 source: "qrc:/icons/ExecutableEmpty_01.svg"
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked:{
+                        parent.onInputClicked()
+                    }
+                }
 
                 HoverHandler {
                     onHoveredChanged: {
