@@ -5,7 +5,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 
 from VisualProgramming.UI.GraphSystem.GraphUtilities import drawBackground, drawGuideline
-from VisualProgramming.UI.GraphSystem.Items.ActionNode.ActionNode import ActionNode, ActionNodeProxy
+from VisualProgramming.UI.GraphSystem.Items.ActionNode.ActionNode import ActionNode
 from VisualProgramming.Core.PkgResource import PkgResource
 
 

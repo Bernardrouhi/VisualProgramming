@@ -69,17 +69,61 @@ Rectangle{
                 source: "qrc:/icons/Function.svg"
             }
 
-            Text {
-                id: nodeTitle
+            Item  {
                 anchors.left: nodeIcon.right
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
                 anchors.leftMargin: 5
-                text: "Title"
-                font.bold: true
-                font.pixelSize: 20
-                color: "white"
+
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton
+                    hoverEnabled: true
+
+                    onPressed: (mouse)=> {
+                        mouse.accepted = true;
+                    //     Qt.callLater(() => {mouse.accepted = false})
+                    }
+
+                    onDoubleClicked: (mouse)=> {
+                        if (nodeTitle.visible){
+                            nodeTitleField.text = nodeTitle.text;
+                            nodeTitle.visible = false;
+                            nodeTitleField.visible = true;
+                            nodeTitleField.forceActiveFocus();
+                            console.log(mouse);
+                        }
+                        mouse.accepted = false;
+                    }
+                }
+
+                Text {
+                    id: nodeTitle
+                    anchors.fill: parent
+                    text: "Title"
+                    font.bold: true
+                    font.pixelSize: 20
+                    color: "white"
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                TextField {
+                    id: nodeTitleField
+                    anchors.fill: parent
+                    visible: false
+                    verticalAlignment: Text.AlignVCenter
+                    font.pixelSize: 20
+                    background: null
+
+                    onEditingFinished: {
+                        nodeTitle.text = this.text;
+                        this.visible = false;
+                        nodeTitle.visible = true;
+                    }
+                }
             }
+
         }
 
         // Input and Output
@@ -92,13 +136,11 @@ Rectangle{
             anchors.margins: 2
             color: "transparent"
 
-
-
             Image {
                 id: executeInput
                 objectName: "ExecuteInput"
 
-                signal onInputClicked
+                signal onInputClicked()
 
                 anchors.left: parent.left
                 anchors.top: parent.top
@@ -109,8 +151,11 @@ Rectangle{
 
                 MouseArea {
                     anchors.fill: parent
+                    enabled: true
+                    acceptedButtons: Qt.LeftButton
 
-                    onClicked:{
+                    onClicked: (mouse)=> {
+                        console.log("Inout")
                         parent.onInputClicked()
                     }
                 }
@@ -128,12 +173,26 @@ Rectangle{
 
             Image {
                 id: executeOutput
+                objectName: "ExecuteOutput"
+
+                signal onOutputClicked()
+
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.margins: 10
                 fillMode: Image.PreserveAspectFit
                 source: "qrc:/icons/ExecutableEmpty_01.svg"
+
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton
+
+                    onClicked:{
+                        console.log("Inout")
+                        parent.onOutputClicked()
+                    }
+                }
 
                 HoverHandler {
                     onHoveredChanged: {

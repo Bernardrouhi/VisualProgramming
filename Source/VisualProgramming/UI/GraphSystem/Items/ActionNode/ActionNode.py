@@ -1,4 +1,5 @@
 from typing import Any
+from pathlib import Path
 
 from PySide6.QtQuick import *
 from PySide6.QtGui import *
@@ -12,9 +13,7 @@ import VisualProgramming.UI.GraphSystem.Items.ActionNode.ActionNodeResources
 
 
 class ActionNodeProxy(QGraphicsProxyWidget):
-    url = QUrl.fromLocalFile(
-        r"D:\Craft\PythonProjects\VisualProgramming\Source\VisualProgramming\UI\GraphSystem\Items\ActionNode\ActionNode.qml"
-    )
+    url = QUrl.fromLocalFile(Path(__file__).parent.resolve() / "ActionNode.qml")
 
     def __init__(self, parent: None | QGraphicsItem = None):
         super().__init__(parent)
@@ -26,7 +25,7 @@ class ActionNodeProxy(QGraphicsProxyWidget):
         quickWidget.setAttribute(Qt.WA_TranslucentBackground)
         root = quickWidget.rootObject()
         inputButton = root.findChild(QObject, "ExecuteInput")
-        inputButton.onInputClicked.connect(self.onClicked)
+        inputButton.onInputClicked.connect(self.onExecuteInputClicked)
         self.setWidget(quickWidget)
         self.setFlag(QGraphicsItem.ItemIsMovable | QGraphicsItem.ItemIsSelectable)
 
@@ -36,7 +35,7 @@ class ActionNodeProxy(QGraphicsProxyWidget):
         if root:
             root.setProperty("isSelected", value)
 
-    def onClicked(self) -> None:
+    def onExecuteInputClicked(self) -> None:
         print("Clicked")
 
 
